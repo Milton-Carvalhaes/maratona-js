@@ -13,7 +13,7 @@ const getWord = () => {
 }
 
 const isValidKey = (key, word) => {
-  if(!word) return false;
+  if (!word) return false;
   const result = word.split('').includes(key);
   return result;
 }
@@ -26,7 +26,27 @@ const App = () => {
 
   const [validKeys, setValidKeys] = useState([]);
   const [typedKeys, setTypedKeys] = useState([]);
+  const [completedWords, setCompletedWords] = useState([]);
   const [word, setWord] = useState('');
+
+  useEffect(() => {
+    const wordValidKeys = validKeys.join('').toLowerCase();
+    if (word && word === wordValidKeys) {
+      //Adicionar word a completedWords
+      //limpar o array de verificação
+      //buscar uma nova palavra
+
+      let newWord = null;
+      do {
+        newWord = getWord();
+      } while (completedWords.includes(newWord))
+
+      setWord(newWord);
+      setValidKeys([]);
+      setCompletedWords((prev) => [...prev, word]);
+
+    }
+  }, [word, validKeys, completedWords]);
 
   const handleKeyDown = (e) => {
     e.preventDefault();
@@ -34,15 +54,14 @@ const App = () => {
     setTypedKeys((prev) => [...prev, key].slice(-MAX_TYPED_KEYS));
 
     if (isValidKey(key, word)) {
-      setValidKeys((prev)=>{
+      setValidKeys((prev) => {
         const isValidLength = prev.length <= word.length;
         const isNextChar = isValidLength && word[prev.length] === key;
-   
-        return isNextChar? [...prev, key]:prev;
+
+        return isNextChar ? [...prev, key] : prev;
       })
     }
 
-    console.log('key', key);
   }
 
   return (
@@ -55,9 +74,9 @@ const App = () => {
       </div>
       <div className="completed-words">
         <ol>
-          <li>cidade</li>
-          <li>vampeta</li>
-          <li>neto</li>
+          {completedWords.map((word) => {
+            return (<li key={word}>{word}</li>)
+          })}
         </ol>
       </div>
     </div>

@@ -36,6 +36,8 @@ body{
   min-width: 600px;
   border-bottom: solid 2px #fff;
   display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .container .valid-keys .matched{
@@ -57,7 +59,7 @@ body{
   right: 0px;
 
   text-align: left;
-  padding: 20px 40px;
+  padding: 20px 40px 20px 60px;
 
   font-size: 1.8rem;
   line-height:2.5rem;
